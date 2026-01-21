@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>R6 Hitman</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div>
+        <h1>R6 Hitman</h1>
+        <p class="muted">6 case files • race to claim kills • points by finish order</p>
+      </div>
+      <div class="pill" id="connStatus">Connecting…</div>
+    </header>
+
+    <section class="card" id="joinCard">
+      <h2>Join or create lobby</h2>
+      <div class="row">
+        <label>
+          Your name
+          <input id="nameInput" placeholder="Kieran" maxlength="20" />
+        </label>
+        <label>
+          Lobby code (join)
+          <input id="codeInput" placeholder="ABCDE" maxlength="5" />
+        </label>
+      </div>
+      <div class="row buttons">
+        <button id="createBtn">Create lobby (host)</button>
+        <button id="joinBtn" class="secondary">Join lobby</button>
+      </div>
+      <div class="muted small" id="joinHint"></div>
+    </section>
+
+    <section class="card hidden" id="lobbyCard">
+      <div class="lobbyHead">
+        <div>
+          <h2>Lobby <span id="lobbyCodeLabel"></span></h2>
+          <div class="muted small" id="roleLabel"></div>
+        </div>
+        <div class="row buttons">
+          <button id="startRoundBtn" class="hidden">Start round</button>
+          <button id="resetScoresBtn" class="hidden secondary">Reset scores</button>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <h3>Case files</h3>
+          <div id="caseFiles" class="cases"></div>
+        </div>
+
+        <div>
+          <h3>Leaderboard</h3>
+          <div id="players" class="players"></div>
+
+          <h3>Claim order</h3>
+          <ol id="claimOrder" class="order"></ol>
+
+          <div class="muted small" id="roundStatus"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="muted small">
+      Tip: host shares the lobby code. Everyone uses the same page.
+    </footer>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="/static/client.js"></script>
+</body>
+</html>

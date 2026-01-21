@@ -1,14 +1,25 @@
-# R6 Hitman
+# R6 Hitman (WebSockets)
 
-A lightweight FastAPI + WebSocket game board for tracking Rainbow Six Hitman case files.
+A simple Flask + Socket.IO party game:
+- Host creates a lobby
+- Players join with a code
+- Host starts a round to generate 6 case files (target operator + 3 random requirements)
+- Players race to claim kills; points awarded by claim order
 
-## Run locally
+## Setup
 
+### 1) Install dependencies
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+pip install flask flask-socketio eventlet
 ```
 
-Then open <http://localhost:8000>.
+### 2) Run
+```bash
+python app.py
+```
+
+Open: http://127.0.0.1:5000
+
+## Notes
+- This is an MVP / starter. Claims are honor-system.
+- Easy upgrades: timers, per-player case files, proof upload, persistent lobbies, etc.
