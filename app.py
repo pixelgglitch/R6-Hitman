@@ -18,19 +18,22 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 # -----------------------------
 # Game data
 # -----------------------------
-OPERATORS = [
+ATTACKERS = [
     "Sledge", "Thatcher", "Ash", "Thermite", "Twitch", "Montagne",
     "Glaz", "Fuze", "Blitz", "IQ", "Buck", "Blackbeard",
     "Capitão", "Hibana", "Jackal", "Ying", "Zofia", "Dokkaebi",
     "Lion", "Finka", "Maverick", "Nomad", "Gridlock", "Nøkk",
     "Amaru", "Kali", "Iana", "Ace", "Zero", "Flores",
     "Osa", "Sens", "Grim", "Brava", "Ram", "Deimos",
+]
+
+DEFENDERS = [
     "Smoke", "Mute", "Castle", "Pulse", "Doc", "Rook",
     "Kapkan", "Tachanka", "Jäger", "Bandit", "Frost", "Valkyrie",
     "Caveira", "Echo", "Mira", "Lesion", "Ela", "Vigil",
     "Maestro", "Alibi", "Clash", "Kaid", "Mozzie", "Warden",
     "Goyo", "Wamai", "Oryx", "Melusi", "Aruni", "Thunderbird",
-    "Thorn", "Azami", "Solis", "Fenrir", "Tubarao"
+    "Thorn", "Azami", "Solis", "Fenrir", "Tubarao",
 ]
 
 # Keep these "requirements" generic so they work across platforms/players.
@@ -78,7 +81,8 @@ def _rid(n=6) -> str:
 @dataclass
 class CaseFile:
     id: str
-    target: str
+    side: str
+    targets: List[str]
     requirements: List[str]
     claimed_by: Optional[str] = None  # player_id
     claimed_at: Optional[float] = None
@@ -118,16 +122,18 @@ class LobbyState:
         self.round_active = True
         self.claim_order = []
 
-        # Pick 6 unique targets if possible (or allow repeats if not enough)
-        targets = random.sample(OPERATORS, k=6) if len(OPERATORS) >= 6 else [random.choice(OPERATORS) for _ in range(6)]
-
         self.case_files = []
-        for i in range(6):
+        sides = ["Attackers"] * 3 + ["Defenders"] * 3
+        random.shuffle(sides)
+        for side in sides:
+            pool = ATTACKERS if side == "Attackers" else DEFENDERS
+            targets = random.sample(pool, k=6) if len(pool) >= 6 else [random.choice(pool) for _ in range(6)]
             reqs = random.sample(REQUIREMENTS, k=3) if len(REQUIREMENTS) >= 3 else random.choices(REQUIREMENTS, k=3)
             self.case_files.append(
                 CaseFile(
                     id=_rid(8),
-                    target=targets[i],
+                    side=side,
+                    targets=targets,
                     requirements=reqs,
                 )
             )

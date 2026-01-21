@@ -107,8 +107,8 @@ function renderCases(caseFiles, players, pointsByPlace) {
 
     card.innerHTML = `
       <div class="caseTop">
-        <div class="tag">TARGET</div>
-        <div class="target">${escapeHtml(cf.target)}</div>
+        <div class="tag">${escapeHtml(cf.side || "Targets")}</div>
+        <div class="target">${(cf.targets || []).map(t => escapeHtml(t)).join(", ")}</div>
       </div>
 
       <div class="reqs">
@@ -116,7 +116,9 @@ function renderCases(caseFiles, players, pointsByPlace) {
       </div>
 
       <div class="caseBottom">
-        <div class="claimed">${claimed ? `Claimed by <b>${escapeHtml(claimedName)}</b>` : "Unclaimed"}</div>
+        <div class="claimed">
+          ${claimed ? `Claimed by <b>${escapeHtml(claimedName)}</b>` : "Unclaimed — kill any one target"}
+        </div>
         <button class="${claimed ? "secondary" : ""}" ${btnDisabled ? "disabled" : ""}>
           ${claimed ? "Claimed" : "Claim Kill"}
         </button>
@@ -156,7 +158,8 @@ function renderOrder(orderIds, caseFiles, players) {
       li.textContent = `#${idx + 1}: (unknown)`;
     } else {
       const who = playerNameById[cf.claimed_by] || "Unknown";
-      li.textContent = `#${idx + 1}: ${cf.target} — ${who}`;
+      const label = cf.side ? `${cf.side} file` : "Case file";
+      li.textContent = `#${idx + 1}: ${label} — ${who}`;
     }
     list.appendChild(li);
   });
