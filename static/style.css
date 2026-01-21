@@ -6,6 +6,11 @@
   --muted: #a6b3cc;
   --line: rgba(255,255,255,0.10);
   --accent: #7aa2ff;
+  --poster-red: #ff3b30;
+  --poster-yellow: #ffe45c;
+  --poster-green: #30e053;
+  --poster-black: #090909;
+  --poster-white: #f2f2f2;
 }
 
 * { box-sizing: border-box; }
@@ -84,20 +89,105 @@ button:disabled {
 @media (max-width: 700px) { .cases { grid-template-columns: 1fr; } }
 
 .case {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 12px;
-  background: rgba(255,255,255,0.03);
+  border: 3px solid var(--poster-black);
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(180deg, #f7f7f7, #e6e6e6);
+  color: var(--poster-black);
+  box-shadow: 0 12px 22px rgba(0,0,0,0.35);
 }
-.caseTop { display:flex; align-items:baseline; gap: 10px; margin-bottom: 8px; }
-.tag { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); }
-.target { font-size: 18px; font-weight: 800; }
+.casePoster { display:flex; gap: 12px; align-items:stretch; }
+.casePosterMain { flex: 1; }
+.caseTitle,
+.caseSectionTitle {
+  font-family: "Impact", "Haettenschweiler", "Arial Black", sans-serif;
+  color: var(--poster-red);
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: -2px -2px 0 var(--poster-black), 2px -2px 0 var(--poster-black),
+    -2px 2px 0 var(--poster-black), 2px 2px 0 var(--poster-black);
+}
+.caseIntroText {
+  margin: 6px 0 8px;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--poster-black);
+  padding: 6px 10px;
+  border-radius: 10px;
+  line-height: 1.4;
+}
+.caseTargets {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--poster-yellow);
+  text-shadow: -1px -1px 0 var(--poster-black), 1px -1px 0 var(--poster-black),
+    -1px 1px 0 var(--poster-black), 1px 1px 0 var(--poster-black);
+}
+.targetName { font-weight: 800; }
 
-.reqs { margin: 10px 0; display:flex; flex-direction:column; gap: 6px; }
-.req { color: var(--text); opacity: 0.92; font-size: 14px; }
+.caseBadge {
+  min-width: 140px;
+  background: #fafafa;
+  border: 3px solid var(--poster-black);
+  border-radius: 12px;
+  padding: 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.caseBadgeTitle {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.caseBadgeSubtitle {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: #555;
+}
+
+.caseSection { margin-top: 12px; }
+.reqs {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+.req {
+  display:flex;
+  gap: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.req::before {
+  content: "-";
+  font-weight: 900;
+  color: var(--poster-black);
+}
+.reqText {
+  color: var(--poster-green);
+  text-shadow: -1px -1px 0 var(--poster-black), 1px -1px 0 var(--poster-black),
+    -1px 1px 0 var(--poster-black), 1px 1px 0 var(--poster-black);
+}
 
 .caseBottom { display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-top: 10px; }
-.claimed { color: var(--muted); font-size: 13px; }
+.claimed { color: #333; font-size: 13px; font-weight: 600; }
+.case button {
+  background: var(--poster-black);
+  color: #fff;
+  border: 2px solid var(--poster-black);
+}
+.case button.secondary {
+  background: #d9d9d9;
+  color: #222;
+  border-color: #222;
+}
 
 .players { display:flex; flex-direction:column; gap: 8px; }
 .player {

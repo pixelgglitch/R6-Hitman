@@ -96,7 +96,20 @@ function renderCases(caseFiles, players, pointsByPlace) {
   const playerNameById = {};
   players.forEach(p => playerNameById[p.id] = p.name);
 
-  caseFiles.forEach((cf) => {
+  const introPhrases = [
+    "This stack of {count} {side} just got promoted to public enemy number one.",
+    "Intel says the {side} crew is running on pure cartoon logic today.",
+    "These {side} are the bargain-bin villains nobody asked for.",
+    "Rumor is the {side} squad was caught eating glue again."
+  ];
+  const outroPhrases = [
+    "Clip any one of them and bask in the dramatic music.",
+    "{first} is the loudest mouth in the pile — shut it down.",
+    "Pick one target and send them to the respawn lobby.",
+    "Make it quick, make it silly, make it legendary."
+  ];
+
+  caseFiles.forEach((cf, index) => {
     const card = document.createElement("div");
     card.className = "case";
 
@@ -105,14 +118,34 @@ function renderCases(caseFiles, players, pointsByPlace) {
 
     const btnDisabled = claimed;
 
+    const targets = cf.targets || [];
+    const firstTarget = targets[0] || "that one";
+    const sideLabel = (cf.side || "Targets").toLowerCase();
+    const intro = `${introPhrases[index % introPhrases.length]
+      .replaceAll("{count}", targets.length || 6)
+      .replaceAll("{side}", sideLabel)} ${outroPhrases[(index + 1) % outroPhrases.length]
+      .replaceAll("{first}", firstTarget)}`;
+
     card.innerHTML = `
-      <div class="caseTop">
-        <div class="tag">${escapeHtml(cf.side || "Targets")}</div>
-        <div class="target">${(cf.targets || []).map(t => escapeHtml(t)).join(", ")}</div>
+      <div class="casePoster">
+        <div class="casePosterMain">
+          <div class="caseTitle">TARGET:</div>
+          <div class="caseIntroText">${escapeHtml(intro)}</div>
+          <div class="caseTargets">
+            ${(targets).map(t => `<span class="targetName">${escapeHtml(t)}</span>`).join(", ")}
+          </div>
+        </div>
+        <div class="caseBadge">
+          <div class="caseBadgeTitle">${escapeHtml(cf.side || "Targets")}</div>
+          <div class="caseBadgeSubtitle">Case File</div>
+        </div>
       </div>
 
-      <div class="reqs">
-        ${cf.requirements.map(r => `<div class="req">• ${escapeHtml(r)}</div>`).join("")}
+      <div class="caseSection">
+        <div class="caseSectionTitle">REQUIREMENTS:</div>
+        <ul class="reqs">
+          ${cf.requirements.map(r => `<li class="req"><span class="reqText">${escapeHtml(r)}</span></li>`).join("")}
+        </ul>
       </div>
 
       <div class="caseBottom">
