@@ -90,9 +90,7 @@ button:disabled {
   font-family: "Impact", "Haettenschweiler", "Arial Black", sans-serif;
   font-size: 24px;
   text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: -2px -2px 0 var(--poster-black), 2px -2px 0 var(--poster-black),
-    -2px 2px 0 var(--poster-black), 2px 2px 0 var(--poster-black);
+  color: var(--poster-red);
   margin-bottom: 8px;
 }
 .caseRow { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -104,7 +102,7 @@ button:disabled {
   border-radius: 18px;
   padding: 14px;
   background: linear-gradient(180deg, #f7f7f7, #e6e6e6);
-  color: var(--poster-black);
+  color: #141414;
   box-shadow: 0 12px 22px rgba(0,0,0,0.35);
 }
 .casePoster { display:flex; gap: 12px; align-items:stretch; }
@@ -116,24 +114,17 @@ button:disabled {
   font-size: 28px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  text-shadow: -2px -2px 0 var(--poster-black), 2px -2px 0 var(--poster-black),
-    -2px 2px 0 var(--poster-black), 2px 2px 0 var(--poster-black);
 }
 .caseIntroText {
   margin: 6px 0 8px;
   font-weight: 700;
-  color: #ffffff;
-  background: var(--poster-black);
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 4px 0;
   line-height: 1.4;
 }
 .caseTargets {
   font-size: 18px;
   font-weight: 800;
-  color: var(--poster-yellow);
-  text-shadow: -1px -1px 0 var(--poster-black), 1px -1px 0 var(--poster-black),
-    -1px 1px 0 var(--poster-black), 1px 1px 0 var(--poster-black);
+  color: var(--poster-red);
 }
 .targetName { font-weight: 800; }
 
@@ -182,9 +173,7 @@ button:disabled {
   color: var(--poster-black);
 }
 .reqText {
-  color: var(--poster-green);
-  text-shadow: -1px -1px 0 var(--poster-black), 1px -1px 0 var(--poster-black),
-    -1px 1px 0 var(--poster-black), 1px 1px 0 var(--poster-black);
+  color: #1b6fd8;
 }
 
 .caseBottom { display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-top: 10px; }
