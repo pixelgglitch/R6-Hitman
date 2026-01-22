@@ -84,8 +84,7 @@ button:disabled {
 .pill.bad { border-color: rgba(255,122,122,0.4); }
 
 .lobbyHead { display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
-.grid2 { display:grid; grid-template-columns: 1.6fr 1fr; gap: 14px; }
-@media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+.gridStack { display:flex; flex-direction:column; gap: 22px; }
 
 .cases { display:flex; flex-direction:column; gap: 18px; }
 .caseGroupTitle {
