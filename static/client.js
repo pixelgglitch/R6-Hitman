@@ -121,7 +121,9 @@ function renderCases(caseFiles, players, pointsByPlace) {
     const targets = cf.targets || [];
     const firstTarget = targets[0] || "that one";
     const sideLabel = (cf.side || "Targets").toLowerCase();
-    const targetList = targets.length ? targets.join(", ") : "unknown";
+    const targetList = targets.length
+      ? targets.map(t => `<span class="targetName">${escapeHtml(t)}</span>`).join(", ")
+      : "unknown";
     const intro = `${introPhrases[index % introPhrases.length]
       .replaceAll("{count}", targets.length || 6)
       .replaceAll("{side}", sideLabel)} Targets: ${targetList}. ${outroPhrases[(index + 1) % outroPhrases.length]
@@ -131,7 +133,7 @@ function renderCases(caseFiles, players, pointsByPlace) {
       <div class="casePoster">
         <div class="casePosterMain">
           <div class="caseTitle">TARGET:</div>
-          <div class="caseIntroText">${escapeHtml(intro)}</div>
+          <div class="caseIntroText">${intro}</div>
         </div>
         <div class="caseBadge">
           <div class="caseBadgeTitle">${escapeHtml(cf.side || "Targets")}</div>
@@ -143,9 +145,13 @@ function renderCases(caseFiles, players, pointsByPlace) {
         <div class="caseSectionTitle">REQUIREMENTS:</div>
         <ul class="reqs">
           ${cf.requirements.map(r => {
-            const [first, ...rest] = String(r).split(" ");
-            const remainder = rest.join(" ");
-            return `<li class="req"><span class="reqKeyword">${escapeHtml(first)}</span>${remainder ? ` <span class="reqText">${escapeHtml(remainder)}</span>` : ""}</li>`;
+            const words = String(r).trim().split(" ").filter(Boolean);
+            if (!words.length) {
+              return `<li class="req"><span class="reqText"></span></li>`;
+            }
+            const important = words.pop();
+            const remainder = words.join(" ");
+            return `<li class="req">${remainder ? `<span class="reqText">${escapeHtml(remainder)}</span> ` : ""}<span class="reqKeyword">${escapeHtml(important)}</span></li>`;
           }).join("")}
         </ul>
       </div>

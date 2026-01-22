@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
+
 :root {
   --bg: #0b0f17;
   --card: #121a28;
@@ -87,7 +89,7 @@ button:disabled {
 
 .cases { display:flex; flex-direction:column; gap: 18px; }
 .caseGroupTitle {
-  font-family: "Impact", "Haettenschweiler", "Arial Black", sans-serif;
+  font-family: "Bangers", "Comic Sans MS", "Comic Neue", "Trebuchet MS", sans-serif;
   font-size: 24px;
   text-transform: uppercase;
   color: var(--poster-red);
@@ -109,7 +111,7 @@ button:disabled {
 .casePosterMain { flex: 1; }
 .caseTitle,
 .caseSectionTitle {
-  font-family: "Impact", "Haettenschweiler", "Arial Black", sans-serif;
+  font-family: "Bangers", "Comic Sans MS", "Comic Neue", "Trebuchet MS", sans-serif;
   color: var(--poster-red);
   font-size: 28px;
   letter-spacing: 0.04em;
@@ -120,6 +122,10 @@ button:disabled {
   font-weight: 700;
   padding: 4px 0;
   line-height: 1.4;
+}
+.caseIntroText .targetName {
+  color: var(--poster-red);
+  font-weight: 900;
 }
 .caseBadge {
   min-width: 140px;
