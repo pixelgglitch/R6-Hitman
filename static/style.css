@@ -102,7 +102,7 @@ button:disabled {
   border: 3px solid var(--poster-black);
   border-radius: 18px;
   padding: 14px;
-  background: linear-gradient(180deg, #f7f7f7, #e6e6e6);
+  background: linear-gradient(180deg, #eef2ff, #d9e2ff);
   color: #141414;
   box-shadow: 0 12px 22px rgba(0,0,0,0.35);
 }
