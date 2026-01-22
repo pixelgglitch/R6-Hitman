@@ -109,7 +109,7 @@ function renderCases(caseFiles, players, pointsByPlace) {
     "Make it quick, make it silly, make it legendary."
   ];
 
-  caseFiles.forEach((cf, index) => {
+  const buildCaseCard = (cf, index) => {
     const card = document.createElement("div");
     card.className = "case";
 
@@ -163,7 +163,27 @@ function renderCases(caseFiles, players, pointsByPlace) {
       socket.emit("claim_kill", { lobby_code: lobbyCode, case_id: cf.id });
     });
 
-    wrap.appendChild(card);
+    return card;
+  };
+
+  const groups = [
+    { title: "Attackers", items: caseFiles.filter(cf => cf.side === "Attackers") },
+    { title: "Defenders", items: caseFiles.filter(cf => cf.side === "Defenders") }
+  ];
+
+  groups.forEach((group, groupIndex) => {
+    if (!group.items.length) return;
+    const section = document.createElement("div");
+    section.className = "caseGroup";
+    section.innerHTML = `<div class="caseGroupTitle">${escapeHtml(group.title)}</div>`;
+
+    const row = document.createElement("div");
+    row.className = "caseRow";
+    group.items.forEach((cf, index) => {
+      row.appendChild(buildCaseCard(cf, index + groupIndex * 3));
+    });
+    section.appendChild(row);
+    wrap.appendChild(section);
   });
 
   if (!caseFiles.length) {
