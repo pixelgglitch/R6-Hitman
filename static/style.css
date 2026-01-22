@@ -121,13 +121,6 @@ button:disabled {
   padding: 4px 0;
   line-height: 1.4;
 }
-.caseTargets {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--poster-red);
-}
-.targetName { font-weight: 800; }
-
 .caseBadge {
   min-width: 140px;
   background: #fafafa;
@@ -173,7 +166,13 @@ button:disabled {
   color: var(--poster-black);
 }
 .reqText {
+  color: inherit;
+  font-weight: 600;
+}
+.reqKeyword {
   color: #1b6fd8;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .caseBottom { display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-top: 10px; }
