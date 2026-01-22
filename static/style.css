@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Baloo+2:wght@400;600;700&display=swap");
 
 :root {
   --bg: #0b0f17;
@@ -18,7 +18,7 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: "Baloo 2", "Comic Sans MS", "Comic Neue", "Trebuchet MS", sans-serif;
   background: radial-gradient(1000px 600px at 20% 0%, #14213a, var(--bg));
   color: var(--text);
 }
@@ -124,7 +124,7 @@ button:disabled {
   line-height: 1.4;
 }
 .caseIntroText .targetName {
-  color: var(--poster-red);
+  color: var(--poster-green);
   font-weight: 900;
 }
 .caseBadge {
@@ -176,7 +176,7 @@ button:disabled {
   font-weight: 600;
 }
 .reqKeyword {
-  color: #1b6fd8;
+  color: var(--poster-green);
   font-weight: 900;
   text-transform: uppercase;
 }
