@@ -96,7 +96,20 @@ function renderCases(caseFiles, players, pointsByPlace) {
   const playerNameById = {};
   players.forEach(p => playerNameById[p.id] = p.name);
 
-  caseFiles.forEach((cf) => {
+  const introPhrases = [
+    "This stack of {count} {side} just got promoted to public enemy number one.",
+    "Intel says the {side} crew is running on pure cartoon logic today.",
+    "These {side} are the bargain-bin villains nobody asked for.",
+    "Rumor is the {side} squad was caught eating glue again."
+  ];
+  const outroPhrases = [
+    "Clip any one of them and bask in the dramatic music.",
+    "{first} is the loudest mouth in the pile — shut it down.",
+    "Pick one target and send them to the respawn lobby.",
+    "Make it quick, make it silly, make it legendary."
+  ];
+
+  const buildCaseCard = (cf, index) => {
     const card = document.createElement("div");
     card.className = "case";
 
@@ -105,14 +118,42 @@ function renderCases(caseFiles, players, pointsByPlace) {
 
     const btnDisabled = claimed;
 
+    const targets = cf.targets || [];
+    const firstTarget = targets[0] || "that one";
+    const sideLabel = (cf.side || "Targets").toLowerCase();
+    const targetList = targets.length
+      ? targets.map(t => `<span class="targetName">${escapeHtml(t)}</span>`).join(", ")
+      : "unknown";
+    const intro = `${introPhrases[index % introPhrases.length]
+      .replaceAll("{count}", targets.length || 6)
+      .replaceAll("{side}", sideLabel)} Targets: ${targetList}. ${outroPhrases[(index + 1) % outroPhrases.length]
+      .replaceAll("{first}", firstTarget)}`;
+
     card.innerHTML = `
-      <div class="caseTop">
-        <div class="tag">${escapeHtml(cf.side || "Targets")}</div>
-        <div class="target">${(cf.targets || []).map(t => escapeHtml(t)).join(", ")}</div>
+      <div class="casePoster">
+        <div class="casePosterMain">
+          <div class="caseTitle">TARGET:</div>
+          <div class="caseIntroText">${intro}</div>
+        </div>
+        <div class="caseBadge">
+          <div class="caseBadgeTitle">${escapeHtml(cf.side || "Targets")}</div>
+          <div class="caseBadgeSubtitle">Case File</div>
+        </div>
       </div>
 
-      <div class="reqs">
-        ${cf.requirements.map(r => `<div class="req">• ${escapeHtml(r)}</div>`).join("")}
+      <div class="caseSection">
+        <div class="caseSectionTitle">REQUIREMENTS:</div>
+        <ul class="reqs">
+          ${cf.requirements.map(r => {
+            const words = String(r).trim().split(" ").filter(Boolean);
+            if (!words.length) {
+              return `<li class="req"><span class="reqText"></span></li>`;
+            }
+            const important = words.pop();
+            const remainder = words.join(" ");
+            return `<li class="req">${remainder ? `<span class="reqText">${escapeHtml(remainder)}</span> ` : ""}<span class="reqKeyword">${escapeHtml(important)}</span></li>`;
+          }).join("")}
+        </ul>
       </div>
 
       <div class="caseBottom">
@@ -130,7 +171,27 @@ function renderCases(caseFiles, players, pointsByPlace) {
       socket.emit("claim_kill", { lobby_code: lobbyCode, case_id: cf.id });
     });
 
-    wrap.appendChild(card);
+    return card;
+  };
+
+  const groups = [
+    { title: "Attackers", items: caseFiles.filter(cf => cf.side === "Attackers") },
+    { title: "Defenders", items: caseFiles.filter(cf => cf.side === "Defenders") }
+  ];
+
+  groups.forEach((group, groupIndex) => {
+    if (!group.items.length) return;
+    const section = document.createElement("div");
+    section.className = "caseGroup";
+    section.innerHTML = `<div class="caseGroupTitle">${escapeHtml(group.title)}</div>`;
+
+    const row = document.createElement("div");
+    row.className = "caseRow";
+    group.items.forEach((cf, index) => {
+      row.appendChild(buildCaseCard(cf, index + groupIndex * 3));
+    });
+    section.appendChild(row);
+    wrap.appendChild(section);
   });
 
   if (!caseFiles.length) {

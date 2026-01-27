@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Baloo+2:wght@400;600;700&display=swap");
+
 :root {
   --bg: #0b0f17;
   --card: #121a28;
@@ -6,17 +8,22 @@
   --muted: #a6b3cc;
   --line: rgba(255,255,255,0.10);
   --accent: #7aa2ff;
+  --poster-red: #ff3b30;
+  --poster-yellow: #ffe45c;
+  --poster-green: #30e053;
+  --poster-black: #090909;
+  --poster-white: #f2f2f2;
 }
 
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: "Baloo 2", "Comic Sans MS", "Comic Neue", "Trebuchet MS", sans-serif;
   background: radial-gradient(1000px 600px at 20% 0%, #14213a, var(--bg));
   color: var(--text);
 }
 
-.wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+.wrap { max-width: 1400px; margin: 0 auto; padding: 20px; }
 .top { display:flex; align-items:center; justify-content:space-between; gap: 12px; }
 h1 { margin: 0; font-size: 28px; }
 h2 { margin: 0 0 12px; }
@@ -77,27 +84,114 @@ button:disabled {
 .pill.bad { border-color: rgba(255,122,122,0.4); }
 
 .lobbyHead { display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
-.grid2 { display:grid; grid-template-columns: 1.6fr 1fr; gap: 14px; }
-@media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+.gridStack { display:flex; flex-direction:column; gap: 22px; }
 
-.cases { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-@media (max-width: 700px) { .cases { grid-template-columns: 1fr; } }
+.cases { display:flex; flex-direction:column; gap: 18px; }
+.caseGroupTitle {
+  font-family: "Bangers", "Comic Sans MS", "Comic Neue", "Trebuchet MS", sans-serif;
+  font-size: 24px;
+  text-transform: uppercase;
+  color: var(--poster-red);
+  margin-bottom: 8px;
+}
+.caseRow { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1100px) { .caseRow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .caseRow { grid-template-columns: 1fr; } }
 
 .case {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 12px;
-  background: rgba(255,255,255,0.03);
+  border: 3px solid var(--poster-black);
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(180deg, #eef2ff, #d9e2ff);
+  color: #141414;
+  box-shadow: 0 12px 22px rgba(0,0,0,0.35);
 }
-.caseTop { display:flex; align-items:baseline; gap: 10px; margin-bottom: 8px; }
-.tag { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); }
-.target { font-size: 18px; font-weight: 800; }
+.casePoster { display:flex; gap: 12px; align-items:stretch; }
+.casePosterMain { flex: 1; }
+.caseTitle,
+.caseSectionTitle {
+  font-family: "Bangers", "Comic Sans MS", "Comic Neue", "Trebuchet MS", sans-serif;
+  color: var(--poster-red);
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.caseIntroText {
+  margin: 6px 0 8px;
+  font-weight: 700;
+  padding: 4px 0;
+  line-height: 1.4;
+}
+.caseIntroText .targetName {
+  color: var(--poster-green);
+  font-weight: 900;
+}
+.caseBadge {
+  min-width: 140px;
+  background: #fafafa;
+  border: 3px solid var(--poster-black);
+  border-radius: 12px;
+  padding: 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.caseBadgeTitle {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.caseBadgeSubtitle {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: #555;
+}
 
-.reqs { margin: 10px 0; display:flex; flex-direction:column; gap: 6px; }
-.req { color: var(--text); opacity: 0.92; font-size: 14px; }
+.caseSection { margin-top: 12px; }
+.reqs {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+.req {
+  display:flex;
+  gap: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.req::before {
+  content: "-";
+  font-weight: 900;
+  color: var(--poster-black);
+}
+.reqText {
+  color: inherit;
+  font-weight: 600;
+}
+.reqKeyword {
+  color: var(--poster-green);
+  font-weight: 900;
+  text-transform: uppercase;
+}
 
 .caseBottom { display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-top: 10px; }
-.claimed { color: var(--muted); font-size: 13px; }
+.claimed { color: #333; font-size: 13px; font-weight: 600; }
+.case button {
+  background: var(--poster-black);
+  color: #fff;
+  border: 2px solid var(--poster-black);
+}
+.case button.secondary {
+  background: #d9d9d9;
+  color: #222;
+  border-color: #222;
+}
 
 .players { display:flex; flex-direction:column; gap: 8px; }
 .player {
