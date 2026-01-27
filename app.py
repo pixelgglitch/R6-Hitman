@@ -48,6 +48,8 @@ REQUIREMENTS = [
     "Must be outside objective room",
     "Must be within 5m",
     "Must be beyond 10m",
+    "Must be above the target (higher elevation)",
+    "Must be below the target (lower elevation)",
     "Must be headshot",
     "Must be wallbang",
     "Must be through a soft wall",
@@ -57,6 +59,14 @@ REQUIREMENTS = [
     "Must be without taking damage",
     "Must not sprint for 10s before kill",
     "Must be on low health (<50) at time of kill",
+    "Must be full health at time of kill",
+    "Must be with full magazine",
+    "Must be last bullet in magazine",
+    "Must be while on rappel",
+    "Must be while vaulting",
+    "Must be while on stairs",
+    "Must be while using a drone/cam ping beforehand",
+    "Must be while crouch-walking (no sprint)",
     "Must be using a shotgun",
     "Must be using a pistol",
     "Must be using an SMG",
@@ -67,7 +77,79 @@ REQUIREMENTS = [
     "Must be using a suppressor",
     "Must be using iron sights",
     "Must not use gadgets this life",
+    "Must be with no attachments",
+    "Must be while standing still for 3s before kill",
+    "Must be within objective site (not adjacent hallway)",
+    "Must be outside and within 3m of a window",
 ]
+
+REQUIREMENT_GROUPS = {
+    "Must be crouched": "stance",
+    "Must be prone": "stance",
+    "Must be standing (not crouched/prone)": "stance",
+    "Must be ADS when finishing shot": "aiming",
+    "Must hipfire (no ADS)": "aiming",
+    "Must be inside objective room": "location",
+    "Must be outside objective room": "location",
+    "Must be within objective site (not adjacent hallway)": "location",
+    "Must be within 5m": "distance",
+    "Must be beyond 10m": "distance",
+    "Must be using a shotgun": "weapon",
+    "Must be using a pistol": "weapon",
+    "Must be using an SMG": "weapon",
+    "Must be using an AR": "weapon",
+    "Must be using a DMR": "weapon",
+    "Must be using a sniper": "weapon",
+    "Must be using a melee (knife)": "weapon",
+    "Must be on low health (<50) at time of kill": "health",
+    "Must be full health at time of kill": "health",
+    "Must be with full magazine": "magazine",
+    "Must be last bullet in magazine": "magazine",
+    "Must be above the target (higher elevation)": "elevation",
+    "Must be below the target (lower elevation)": "elevation",
+}
+
+OPPOSING_REQUIREMENTS = {
+    ("Must be inside objective room", "Must be outside objective room"),
+    ("Must be within objective site (not adjacent hallway)", "Must be outside objective room"),
+    ("Must be within 5m", "Must be beyond 10m"),
+    ("Must be ADS when finishing shot", "Must hipfire (no ADS)"),
+    ("Must be crouched", "Must be standing (not crouched/prone)"),
+    ("Must be prone", "Must be standing (not crouched/prone)"),
+    ("Must be on low health (<50) at time of kill", "Must be full health at time of kill"),
+    ("Must be with full magazine", "Must be last bullet in magazine"),
+    ("Must be above the target (higher elevation)", "Must be below the target (lower elevation)"),
+}
+
+
+def _requirements_conflict(selected: List[str], candidate: str) -> bool:
+    candidate_group = REQUIREMENT_GROUPS.get(candidate)
+    if candidate_group and any(REQUIREMENT_GROUPS.get(req) == candidate_group for req in selected):
+        return True
+    for a, b in OPPOSING_REQUIREMENTS:
+        if candidate == a and b in selected:
+            return True
+        if candidate == b and a in selected:
+            return True
+    return False
+
+
+def _pick_requirements(count: int) -> List[str]:
+    if not REQUIREMENTS:
+        return []
+    pool = REQUIREMENTS[:]
+    random.shuffle(pool)
+    chosen: List[str] = []
+    for requirement in pool:
+        if _requirements_conflict(chosen, requirement):
+            continue
+        chosen.append(requirement)
+        if len(chosen) == count:
+            return chosen
+    if len(chosen) < count:
+        remaining = [req for req in REQUIREMENTS if req not in chosen]
+        chosen.extend(random.sample(remaining, k=min(len(remaining), count - len(chosen))))
+    return chosen
 
 # Scoring: 1st claim = most points, later = fewer.
 # With 6 case files, typical: 10, 7, 5, 3, 2, 1
@@ -128,7 +210,7 @@ class LobbyState:
         for side in sides:
             pool = ATTACKERS if side == "Attackers" else DEFENDERS
             targets = random.sample(pool, k=6) if len(pool) >= 6 else [random.choice(pool) for _ in range(6)]
-            reqs = random.sample(REQUIREMENTS, k=3) if len(REQUIREMENTS) >= 3 else random.choices(REQUIREMENTS, k=3)
+            reqs = _pick_requirements(3)
             self.case_files.append(
                 CaseFile(
                     id=_rid(8),
