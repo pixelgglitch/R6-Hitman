@@ -38,6 +38,33 @@ h3 { margin: 14px 0 10px; }
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
+.hoursSummary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+.hoursItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,0.04);
+}
+.hoursLabel {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.hoursValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
 .hidden { display: none; }
 
 .row { display:flex; gap: 12px; flex-wrap: wrap; }
@@ -151,6 +178,23 @@ button:disabled {
 }
 
 .caseSection { margin-top: 12px; }
+.caseMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #222;
+  margin-bottom: 6px;
+}
+.caseMetaLabel {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.caseMetaValue {
+  font-size: 16px;
+  color: var(--poster-red);
+}
 .reqs {
   margin: 8px 0 0;
   padding: 0;
