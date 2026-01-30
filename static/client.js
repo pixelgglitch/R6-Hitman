@@ -70,10 +70,22 @@ socket.on("state", (state) => {
     ? "Round active: claim kills as fast as possible."
     : (state.case_files && state.case_files.length ? "Round finished." : "No round running.");
 
+  const caseFiles = state.case_files || [];
+  updateHoursSummary(caseFiles);
   renderPlayers(state.players || []);
-  renderCases(state.case_files || [], state.players || [], state.points_by_place || []);
-  renderOrder(state.claim_order || [], state.case_files || [], state.players || []);
+  renderCases(caseFiles, state.players || [], state.points_by_place || []);
+  renderOrder(state.claim_order || [], caseFiles, state.players || []);
 });
+
+function updateHoursSummary(caseFiles) {
+  const total = caseFiles.reduce((sum, cf) => sum + (Number(cf.time_needed) || 0), 0);
+  const remaining = caseFiles.reduce(
+    (sum, cf) => sum + (cf.claimed_by ? 0 : (Number(cf.time_needed) || 0)),
+    0
+  );
+  el("totalHoursNeeded").textContent = total;
+  el("remainingHours").textContent = remaining;
+}
 
 function renderPlayers(players) {
   const wrap = el("players");
@@ -142,6 +154,10 @@ function renderCases(caseFiles, players, pointsByPlace) {
       </div>
 
       <div class="caseSection">
+        <div class="caseMeta">
+          <span class="caseMetaLabel">Time needed</span>
+          <span class="caseMetaValue">${Number(cf.time_needed) || 0} hrs</span>
+        </div>
         <div class="caseSectionTitle">REQUIREMENTS:</div>
         <ul class="reqs">
           ${cf.requirements.map(r => {

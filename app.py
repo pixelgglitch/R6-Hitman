@@ -166,6 +166,7 @@ class CaseFile:
     side: str
     targets: List[str]
     requirements: List[str]
+    time_needed: int
     claimed_by: Optional[str] = None  # player_id
     claimed_at: Optional[float] = None
 
@@ -217,6 +218,7 @@ class LobbyState:
                     side=side,
                     targets=targets,
                     requirements=reqs,
+                    time_needed=random.randint(1, 4),
                 )
             )
 
